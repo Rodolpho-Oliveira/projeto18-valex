@@ -1,8 +1,9 @@
 import { Router } from "express"
-import { createNewCard } from "../controllers/cardController.js"
+import { activateCard, createNewCard } from "../controllers/cardController.js"
 
 const cardRouter = Router()
 
 cardRouter.post("/create", createNewCard)
+cardRouter.post("/active", activateCard)
 
 export default cardRouter

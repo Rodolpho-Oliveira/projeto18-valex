@@ -1,9 +1,12 @@
 import dayjs from "dayjs"
-import cryptr from "cryptr"
-import { findByTypeAndEmployeeId, insert, TransactionTypes } from "../repositories/cardRepository.js"
+import dotenv from "dotenv"
+import Cryptr from "cryptr"
+import bcrypt from "bcrypt"
+import { findByCardId, findByTypeAndEmployeeId, insert, TransactionTypes, update } from "../repositories/cardRepository.js"
 import { findByApiKey } from "../repositories/companyRepository.js"
 import { findById } from "../repositories/employeeRepository.js"
 import { faker } from "@faker-js/faker"
+dotenv.config()
 
 export async function checkNewCard(token: string, type: TransactionTypes, employeeId: number) {
     const company = await findByApiKey(token)
@@ -33,10 +36,25 @@ export async function checkNewCard(token: string, type: TransactionTypes, employ
     cardholderName += splitedName[splitedName.length-1].toUpperCase()
     }
     const expirationDate: string = dayjs().add(5, "year").format("MM/YYYY")
-    const securityCode: string = cryptr.encrypt(faker.finance.creditCardCVV())
-    
-    const cardData = {employeeId,number, cardholderName,securityCode,expirationDate,password: null,isVirtual: false,originalCardId: null,isBlocked: true,type}
-    const teste = await insert(cardData)
-    console.log(teste)
+    const cvv = new Cryptr("123")
+    const securityCode: string = cvv.encrypt(faker.finance.creditCardCVV())
+
+    const teste = insert({employeeId,number, cardholderName,securityCode,expirationDate,isVirtual: false,isBlocked: true,type: type})
+
     return true
+}
+
+export async function checkCardActivation(id: number, securityCode: string, password: string) {
+    const card = await findByCardId(id)
+    const cvv = new Cryptr(process.env.CVV_CODE).decrypt(card.securityCode)
+    if(!card || new Date(card.expirationDate).getTime() < Date.now() || card.password || securityCode !== cvv || password.length !== 4){
+        throw {type:"Not found"}
+    }
+    const passwordHash = bcrypt.hashSync(password, 10)
+
+    update(id, {password: passwordHash, isBlocked: false},)
+}
+
+export async function checkIsBlocked(id: number, password: string) {
+    
 }
