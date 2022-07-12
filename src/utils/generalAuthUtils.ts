@@ -3,7 +3,7 @@ import bcrypt from "bcrypt"
 
 export async function generalCardUtil(id: number) {
     const card = await findByCardId(id)
-    if(!card){ 
+    if(!card){
         throw {type: "Card not found"}
     } 
     else if(new Date(card.expirationDate).getTime() < Date.now()){

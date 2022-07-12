@@ -1,5 +1,4 @@
 import {Request, Response, NextFunction} from "express"
-import { findByCardId } from "../repositories/cardRepository.js"
 import { generalCardUtil, passwordCardUtil } from "../utils/generalAuthUtils.js"
 
 export async function unlockBlockMiddleware(req: Request, res: Response, next: NextFunction) {
