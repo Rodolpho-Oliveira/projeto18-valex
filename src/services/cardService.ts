@@ -31,24 +31,22 @@ export async function checkNewCard(type: TransactionTypes, employeeId: number) {
 }
 
 export async function checkCardActivation(id: number, password: string) {
-    
     const passwordHash = bcrypt.hashSync(password, 10)
-
-    update(id, {password: passwordHash, isBlocked: false})
+    await update(id, {password: passwordHash, isBlocked: false})
 }
 
-export async function checkIsBlocked(id: number, password: string) {
+export async function checkIsBlocked(id: number) {
     const card = await findByCardId(id)
-    if(!card || new Date(card.expirationDate).getTime() < Date.now()|| card.isBlocked || !bcrypt.compareSync(password, card.password)){
-        throw {type: "Not found"}
+    if(card.isBlocked){
+        throw {type:"Card alredy blocked"}
     }
     update(id, {isBlocked: true})
 }
 
-export async function checkIsUnlocked(id: number, password: string) {
+export async function checkIsUnlocked(id: number) {
     const card = await findByCardId(id)
-    if(!card || new Date(card.expirationDate).getTime() < Date.now()|| !card.isBlocked || !bcrypt.compareSync(password, card.password)){
-        throw {type: "Not found"}
+    if(!card.isBlocked){
+        throw {type:"Card alredy unlocked"}
     }
     update(id, {isBlocked: false})
 }

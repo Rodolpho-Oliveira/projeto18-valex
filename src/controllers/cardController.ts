@@ -15,19 +15,13 @@ export async function activateCard(req: Request, res: Response) {
 }
 
 export async function blockCard(req: Request, res: Response) {
-    const {id, password} = req.body
-    if(!id || !password){
-        throw {type: "Unauthorized"}
-    }
-    await checkIsBlocked(id, password)
+    const {id} = req.body
+    await checkIsBlocked(id)
     res.sendStatus(200)
 }
 
 export async function unlockCard(req: Request, res: Response) {
-    const {id, password} = req.body
-    if(!id || !password){
-        throw {type: "Unauthorized"}
-    }
-    await checkIsUnlocked(id, password)
+    const {id} = req.body
+    await checkIsUnlocked(id)
     res.sendStatus(200)
 }
