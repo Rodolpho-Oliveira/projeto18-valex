@@ -52,9 +52,21 @@ export async function checkCardActivation(id: number, securityCode: string, pass
     }
     const passwordHash = bcrypt.hashSync(password, 10)
 
-    update(id, {password: passwordHash, isBlocked: false},)
+    update(id, {password: passwordHash, isBlocked: false})
 }
 
 export async function checkIsBlocked(id: number, password: string) {
-    
+    const card = await findByCardId(id)
+    if(!card || new Date(card.expirationDate).getTime() < Date.now()|| card.isBlocked || !bcrypt.compareSync(password, card.password)){
+        throw {type: "Not found"}
+    }
+    update(id, {isBlocked: true})
+}
+
+export async function checkIsUnlocked(id: number, password: string) {
+    const card = await findByCardId(id)
+    if(!card || new Date(card.expirationDate).getTime() < Date.now()|| !card.isBlocked || !bcrypt.compareSync(password, card.password)){
+        throw {type: "Not found"}
+    }
+    update(id, {isBlocked: false})
 }
