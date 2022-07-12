@@ -5,7 +5,6 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
     "start": "node dist/app/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node dist/app/index.js"
