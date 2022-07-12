@@ -5,5 +5,5 @@ export async function rechargeCard(req: Request, res: Response) {
     const {id, value} = req.body
     const TokenApi:any = req.headers['x-api-key']
     await checkRechargeValue(id, value, TokenApi)
-    res.sendStatus(201)
+    res.sendStatus(200)
 }
