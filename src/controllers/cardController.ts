@@ -3,15 +3,8 @@ import { TransactionTypes } from "../repositories/cardRepository.js"
 import { checkCardActivation, checkIsBlocked, checkIsUnlocked, checkNewCard } from "../services/cardService.js"
 
 export async function createNewCard(req: Request, res: Response) {
-    const TokenApi:any = req.headers['x-api-key']
     const {employeeId, type}: {employeeId: number, type: TransactionTypes} = req.body
-    if(!TokenApi || !employeeId || !type){
-        throw {type: "notFound"}
-    }
-    const promise:boolean = await checkNewCard(TokenApi, type, employeeId)
-    if(!promise){
-        throw {type: "Permission denied"}
-    }
+    await checkNewCard(type, employeeId)
     res.sendStatus(201)
 }
 
