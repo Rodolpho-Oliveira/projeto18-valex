@@ -10,19 +10,19 @@ import { generalCardUtil, passwordCardUtil } from "../utils/generalAuthUtils.js"
         const businesses = await findBusinessById(businessId)
         const balance = await checkCardBalance(cardId)
         if(card.isBlocked){
-            throw {type: "Card is blocked"}
+            throw {type: "Card is blocked", status: 401}
         }
         else if(amount <= 0){
-            throw {type: "Insert a correct value"}
+            throw {type: "Insert a correct value", status: 406}
         }
         else if(!businesses){
-            throw {type: "Select a correct businesses"}
+            throw {type: "Select a correct businesses", status: 406}
         }
         else if(businesses.type !== card.type ){
-            throw {type: "Select a correct businesses type"}
+            throw {type: "Select a correct businesses type", status: 406}
         }
         else if(balance.amount < amount){
-            throw {type: "Not enough money"}
+            throw {type: "Not enough money", status: 403}
         }
         await generalCardUtil(cardId)
         await passwordCardUtil(cardId, password)

@@ -5,7 +5,7 @@ import { findRechargesByCardId } from "../repositories/rechargeRepository.js";
 export async function checkCardBalance(id: number) {
     const card = await findByCardId(id)
     if(!card){
-        throw {type: "Not found"}
+        throw {type: "Card not found", status: 404}
     }
     const recharge: Array<any> = await findRechargesByCardId(id)
     const payment: Array<any> = await findPaymentByCardId(id)

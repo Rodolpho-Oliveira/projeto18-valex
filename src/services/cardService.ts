@@ -38,7 +38,7 @@ export async function checkCardActivation(id: number, password: string) {
 export async function checkIsBlocked(id: number) {
     const card = await findByCardId(id)
     if(card.isBlocked){
-        throw {type:"Card alredy blocked"}
+        throw {type:"Card alredy blocked", status: 406}
     }
     update(id, {isBlocked: true})
 }
@@ -46,7 +46,7 @@ export async function checkIsBlocked(id: number) {
 export async function checkIsUnlocked(id: number) {
     const card = await findByCardId(id)
     if(!card.isBlocked){
-        throw {type:"Card alredy unlocked"}
+        throw {type:"Card alredy unlocked", status: 406}
     }
     update(id, {isBlocked: false})
 }

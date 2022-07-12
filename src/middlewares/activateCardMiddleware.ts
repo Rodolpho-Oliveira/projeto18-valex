@@ -11,13 +11,13 @@ export async function activateMiddleware(req: Request, res: Response, next: Next
     const cvv = new Cryptr(process.env.CVV_CODE).decrypt(card.securityCode)
     await generalCardUtil(id)
     if(card.password){
-        throw {type: "Card is alredy active"}
+        throw {type: "Card is alredy active", status: 409}
     }
     else if(securityCode !== cvv){
-        throw {type: "Security code invalid"}
+        throw {type: "Security code invalid", status: 401}
     }
     else if(password.length !== 4){
-        throw {type: "Wrong password"}
+        throw {type: "Wrong password", status: 401}
     }
 
     next()

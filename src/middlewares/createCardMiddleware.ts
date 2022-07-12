@@ -8,18 +8,18 @@ export async function createCardMiddleware(req: Request, res: Response, next: Ne
     const {employeeId, type}: {employeeId: number, type: TransactionTypes} = req.body
     const company = await findByApiKey(TokenApi)
     if(!TokenApi || !employeeId || !type){
-        throw {type: "Need more infomation"}
+        throw {type: "Wrong infomations", status: 403}
     }
     if(!company){
-        throw {type: "Company not found"}
+        throw {type: "Company not found", status: 404}
     }
     const employeeValidation = await findById(employeeId)
     if(!employeeValidation){
-        throw {type: "Employee not found"}
+        throw {type: "Employee not found", status: 404}
     }
     const employeeCardValidation = await findByTypeAndEmployeeId(type, employeeId)
     if(employeeCardValidation){
-        throw {type: "Card alredy created"}
+        throw {type: "Card alredy created", status: 409}
     }
 
     next()

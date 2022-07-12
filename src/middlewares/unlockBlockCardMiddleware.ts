@@ -4,7 +4,7 @@ import { generalCardUtil, passwordCardUtil } from "../utils/generalAuthUtils.js"
 export async function unlockBlockMiddleware(req: Request, res: Response, next: NextFunction) {
     const {id, password} = req.body
     if(!id || !password){
-        throw {type: "Wrong information"}
+        throw {type: "Wrong information", status: 401}
     }
 
     await generalCardUtil(id)
