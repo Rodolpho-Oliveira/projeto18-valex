@@ -13,6 +13,9 @@ export async function createCardMiddleware(req: Request, res: Response, next: Ne
     if(!company){
         throw {type: "Company not found", status: 404}
     }
+    if(type !== 'groceries' &&  type !== 'restaurant' && type !== 'transport'&& type !== 'education'&& type !== 'health'){
+        throw {type: "Wrong type", status: 403}
+    }
     const employeeValidation = await findById(employeeId)
     if(!employeeValidation){
         throw {type: "Employee not found", status: 404}

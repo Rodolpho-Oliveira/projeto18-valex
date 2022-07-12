@@ -25,7 +25,7 @@ export async function checkNewCard(type: TransactionTypes, employeeId: number) {
     }
     const expirationDate: string = dayjs().add(5, "year").format("MM/YYYY")
     const cvv = new Cryptr("123")
-    const securityCode: string = cvv.encrypt(faker.finance.creditCardCVV())
+    const securityCode: string = cvv.encrypt(process.env.CVV_CODE)
 
     await insert({employeeId,number, cardholderName,securityCode,expirationDate,isVirtual: false,isBlocked: true,type: type})
 }
