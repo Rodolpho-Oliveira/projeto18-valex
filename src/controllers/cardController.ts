@@ -9,8 +9,8 @@ export async function createNewCard(req: Request, res: Response) {
 }
 
 export async function activateCard(req: Request, res: Response) {
-    const {id, securityCode, password} = req.body
-    await checkCardActivation(id, securityCode, password)
+    const {id, securityCode} = req.body
+    await checkCardActivation(id, securityCode)
     res.sendStatus(200)
 }
 

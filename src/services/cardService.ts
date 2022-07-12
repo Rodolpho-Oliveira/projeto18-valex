@@ -30,12 +30,8 @@ export async function checkNewCard(type: TransactionTypes, employeeId: number) {
     await insert({employeeId,number, cardholderName,securityCode,expirationDate,isVirtual: false,isBlocked: true,type: type})
 }
 
-export async function checkCardActivation(id: number, securityCode: string, password: string) {
-    const card = await findByCardId(id)
-    const cvv = new Cryptr(process.env.CVV_CODE).decrypt(card.securityCode)
-    if(!card || new Date(card.expirationDate).getTime() < Date.now() || card.password || securityCode !== cvv || password.length !== 4){
-        throw {type:"Not found"}
-    }
+export async function checkCardActivation(id: number, password: string) {
+    
     const passwordHash = bcrypt.hashSync(password, 10)
 
     update(id, {password: passwordHash, isBlocked: false})
