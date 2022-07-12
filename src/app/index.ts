@@ -4,6 +4,7 @@ import cors from "cors"
 import cardRouter from "../routes/cardRouter.js"
 import rechargeRouter from "../routes/rechargeRouter.js"
 import balanceRouter from "../routes/balanceRouter.js"
+import purchaseRouter from "../routes/purchaseRouter.js"
 import { errorHandling } from "../middlewares/errorHandlerMiddleware.js"
 
 const app = express()
@@ -13,6 +14,7 @@ app.use(json())
 app.use(cardRouter)
 app.use(rechargeRouter)
 app.use(balanceRouter)
+app.use(purchaseRouter)
 app.use(errorHandling)
 
 app.listen(4000)
