@@ -51,7 +51,7 @@ $ npm install
  
  POST ```/block```<br>
  
- Need to receive through the body an parameter ```id````
+ Need to receive through the body an parameter ```id```
  ```
    {
       id: 1
@@ -79,7 +79,7 @@ $ npm install
  
   POST ```/payment```<br>
  
- Need to receive through the body an parameter ```cardId```, ```password```, ```businessId```and ```amount```
+ Need to receive through the body an parameter ```cardId```, ```password```, ```businessId``` and ```amount```
  ```
    {
       cardId: 1,
